@@ -1,137 +1,334 @@
 (() => {
   "use strict";
 
-  /* =====================================================
-     API
-  ====================================================== */
+  // =========================================================
+  // CONFIG
+  // =========================================================
 
   const API_BASE = "http://127.0.0.1:8000";
-
-  // Cmd/Ctrl + Shift + D
   const DEV_MODE = true;
 
 
-  /* =====================================================
-     ELEMENTS
-  ====================================================== */
+  // =========================================================
+  // DOM ELEMENTS
+  // =========================================================
 
   const form = document.getElementById("predict-form");
-  const submitBtn = document.getElementById("submit-btn");
+
+  // IMPORTANT:
+  // Your HTML uses calculate-button, NOT submit-btn.
+  const submitBtn = document.getElementById("calculate-button");
 
   const resetBtn = document.getElementById("reset-btn");
-  const errorRetryBtn =
-    document.getElementById("error-retry-btn");
+  const errorRetryBtn = document.getElementById("error-retry-btn");
 
-  const stateIdle =
-    document.getElementById("state-idle");
+  const stateIdle = document.getElementById("state-idle");
+  const stateLoading = document.getElementById("state-loading");
+  const stateResult = document.getElementById("state-result");
+  const stateError = document.getElementById("state-error");
 
-  const stateLoading =
-    document.getElementById("state-loading");
+  const scoreNumberEl = document.getElementById("score-number");
+  const scoreBandEl = document.getElementById("score-band");
+  const scoreContextEl = document.getElementById("score-context");
+  const gaugeFill = document.getElementById("score-fill");
 
-  const stateResult =
-    document.getElementById("state-result");
+  const errorLabelEl = document.getElementById("error-label");
+  const errorCopyEl = document.getElementById("error-copy");
 
-  const stateError =
-    document.getElementById("state-error");
-
-  const scoreNumberEl =
-    document.getElementById("score-number");
-
-  const scoreBandEl =
-    document.getElementById("score-band");
-
-  const scoreContextEl =
-    document.getElementById("score-context");
-
-  const errorLabelEl =
-    document.getElementById("error-label");
-
-  const errorCopyEl =
-    document.getElementById("error-copy");
-
-  const stressGroup =
-    document.getElementById("stress_level_group");
-
-  const stressInput =
-    document.getElementById("stress_level");
-
-  const inputCount =
-    document.getElementById("input-count");
-
-  const resultSection =
-    document.getElementById("result-section");
+  const stressInput = document.getElementById("stress_level");
 
 
-  /* =====================================================
-     INPUT COUNT
-  ====================================================== */
-
-  const requiredInputs = [
-    "age",
-    "gender",
-    "country",
-    "academic_level",
-    "most_used_platform",
-    "purpose_of_use",
-    "avg_daily_usage_hours",
-    "daily_unlocks",
-    "study_hours",
-    "physical_activity_hours",
-    "sleep_hours_per_night",
-    "stress_level"
-  ];
-
-  function updateInputCount() {
-    let count = 0;
-
-    requiredInputs.forEach((id) => {
-      const el = document.getElementById(id);
-
-      if (el && String(el.value).trim() !== "") {
-        count++;
-      }
-    });
-
-    inputCount.textContent =
-      `${String(count).padStart(2, "0")} / 12`;
+  if (!form) {
+    console.error("Prediction form (#predict-form) not found.");
+    return;
   }
 
 
-  /* =====================================================
-     STRESS
-  ====================================================== */
+  // =========================================================
+  // HORIZONTAL TRACK NAVIGATION
+  // =========================================================
 
-  stressGroup
-    .querySelectorAll(".seg-btn")
+  function setupHorizontalTrack({ trackId, panelSelector, leftId, rightId }) {
+    const track = document.getElementById(trackId);
+    const panels = track ? [...track.querySelectorAll(panelSelector)] : [];
+    const left = document.getElementById(leftId);
+    const right = document.getElementById(rightId);
+    let index = 0;
+    let wheelLocked = false;
+    let pointerStart = null;
+
+    if (!track || panels.length === 0) return () => {};
+
+    track.tabIndex = 0;
+
+    function moveTo(nextIndex) {
+      index = Math.max(0, Math.min(nextIndex, panels.length - 1));
+      track.style.transform = `translateX(-${index * 100}vw)`;
+      if (left) left.disabled = index === 0;
+      if (right) right.disabled = index === panels.length - 1;
+    }
+
+    left?.addEventListener("click", () => moveTo(index - 1));
+    right?.addEventListener("click", () => moveTo(index + 1));
+
+    track.addEventListener("wheel", (event) => {
+      const horizontal = Math.abs(event.deltaX);
+      const vertical = Math.abs(event.deltaY);
+
+      if (horizontal <= vertical || horizontal < 12) return;
+
+      event.preventDefault();
+      if (wheelLocked) return;
+
+      wheelLocked = true;
+      moveTo(index + (event.deltaX > 0 ? 1 : -1));
+      window.setTimeout(() => {
+        wheelLocked = false;
+      }, 650);
+    }, { passive: false });
+
+    track.addEventListener("pointerdown", (event) => {
+      if (event.pointerType === "mouse") return;
+      pointerStart = { x: event.clientX, y: event.clientY };
+    });
+
+    track.addEventListener("pointerup", (event) => {
+      if (!pointerStart) return;
+
+      const deltaX = event.clientX - pointerStart.x;
+      const deltaY = event.clientY - pointerStart.y;
+
+      if (Math.abs(deltaX) > 45 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        moveTo(index + (deltaX < 0 ? 1 : -1));
+      }
+
+      pointerStart = null;
+    });
+
+    track.addEventListener("pointercancel", () => {
+      pointerStart = null;
+    });
+
+    track.addEventListener("keydown", (event) => {
+      const tag = event.target?.tagName;
+      if (["INPUT", "SELECT", "TEXTAREA"].includes(tag)) return;
+      if (event.key === "ArrowRight") moveTo(index + 1);
+      if (event.key === "ArrowLeft") moveTo(index - 1);
+    });
+
+    moveTo(0);
+    return moveTo;
+  }
+
+  const moveToExperience = setupHorizontalTrack({
+    trackId: "experience-track",
+    panelSelector: ".experience-panel",
+    leftId: "experience-left",
+    rightId: "experience-right",
+  });
+
+  const moveToCalculator = setupHorizontalTrack({
+    trackId: "predict-form",
+    panelSelector: ".calc-panel",
+    leftId: "calc-left",
+    rightId: "calc-right",
+  });
+
+  const calculatorPanels = [
+    ...document.querySelectorAll("#predict-form .calc-panel")
+  ];
+
+  document.querySelectorAll(".next-calc").forEach((button) => {
+    button.addEventListener("click", () => {
+      const nextIndex = Number(button.dataset.next);
+      if (Number.isFinite(nextIndex)) moveToCalculator(nextIndex);
+    });
+  });
+
+  document.querySelectorAll(".continue-button").forEach((button) => {
+    button.addEventListener("click", () => moveToExperience(1));
+  });
+
+
+  // =========================================================
+  // CUSTOM SELECT BUTTONS
+  // =========================================================
+
+  function selectValue(
+    selectId,
+    value,
+    buttons,
+    valueGetter = (button) => button.dataset.value
+  ) {
+
+    const select = document.getElementById(selectId);
+
+    if (!select) {
+      return;
+    }
+
+    select.value = value;
+
+    buttons.forEach((button) => {
+
+      button.classList.toggle(
+        "active",
+        valueGetter(button) === value
+      );
+
+    });
+
+    select.dispatchEvent(
+      new Event("change", {
+        bubbles: true
+      })
+    );
+
+    clearFieldError(select);
+  }
+
+
+  // Gender / academic level
+  document.querySelectorAll("[data-select]").forEach((button) => {
+
+    button.addEventListener("click", () => {
+
+      const selectId = button.dataset.select;
+
+      const buttons = [
+        ...document.querySelectorAll(
+          `[data-select="${selectId}"]`
+        )
+      ];
+
+      selectValue(
+        selectId,
+        button.dataset.value,
+        buttons
+      );
+
+    });
+
+  });
+
+
+  // =========================================================
+  // PLATFORM
+  // =========================================================
+
+  document
+    .querySelectorAll("[data-platform]")
     .forEach((button) => {
 
       button.addEventListener("click", () => {
 
-        stressGroup
-          .querySelectorAll(".seg-btn")
-          .forEach((b) => {
-            b.classList.remove("active");
-          });
+        const value = button.dataset.platform;
 
-        button.classList.add("active");
+        const buttons = [
+          ...button.parentElement.querySelectorAll(
+            "[data-platform]"
+          )
+        ];
 
-        stressInput.value =
-          button.dataset.value;
+        selectValue(
+          "most_used_platform",
+          value,
+          buttons,
+          (item) => item.dataset.platform
+        );
 
-        clearFieldError(stressInput);
-
-        updateInputCount();
       });
 
     });
 
 
-  /* =====================================================
-     FIELD ERRORS
-  ====================================================== */
+  // =========================================================
+  // PURPOSE
+  // =========================================================
+
+  document
+    .querySelectorAll("[data-purpose]")
+    .forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        const value = button.dataset.purpose;
+
+        const buttons = [
+          ...button.parentElement.querySelectorAll(
+            "[data-purpose]"
+          )
+        ];
+
+        selectValue(
+          "purpose_of_use",
+          value,
+          buttons,
+          (item) => item.dataset.purpose
+        );
+
+      });
+
+    });
+
+
+  // =========================================================
+  // STRESS LEVEL
+  // =========================================================
+
+  document
+    .querySelectorAll("[data-stress]")
+    .forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        const value = button.dataset.stress;
+
+        if (stressInput) {
+          stressInput.value = value;
+        }
+
+        const buttons = [
+          ...document.querySelectorAll("[data-stress]")
+        ];
+
+        buttons.forEach((item) => {
+
+          item.classList.toggle(
+            "active",
+            item === button
+          );
+
+        });
+
+
+        const pressureDisplay =
+          document.getElementById("pressure-display");
+
+        if (pressureDisplay) {
+          pressureDisplay.textContent =
+            value.toUpperCase();
+        }
+
+
+        clearFieldError(stressInput);
+
+      });
+
+    });
+
+
+  // =========================================================
+  // FIELD ERROR HELPERS
+  // =========================================================
 
   function fieldWrapper(input) {
-    return input?.closest(".field");
+
+    if (!input) {
+      return null;
+    }
+
+    return input.closest(".field");
   }
 
 
@@ -139,16 +336,19 @@
 
     const wrapper = fieldWrapper(input);
 
-    if (!wrapper) return;
+    if (!wrapper) {
+      return;
+    }
 
     wrapper.classList.add("field-error");
 
-    const messageElement =
+    const errorMessage =
       wrapper.querySelector(".error-msg");
 
-    if (messageElement) {
-      messageElement.textContent = message;
+    if (errorMessage) {
+      errorMessage.textContent = message;
     }
+
   }
 
 
@@ -156,16 +356,19 @@
 
     const wrapper = fieldWrapper(input);
 
-    if (!wrapper) return;
+    if (!wrapper) {
+      return;
+    }
 
     wrapper.classList.remove("field-error");
 
-    const messageElement =
+    const errorMessage =
       wrapper.querySelector(".error-msg");
 
-    if (messageElement) {
-      messageElement.textContent = "";
+    if (errorMessage) {
+      errorMessage.textContent = "";
     }
+
   }
 
 
@@ -174,20 +377,26 @@
     form
       .querySelectorAll(".field")
       .forEach((field) => {
+
         field.classList.remove("field-error");
+
       });
+
 
     form
       .querySelectorAll(".error-msg")
       .forEach((message) => {
+
         message.textContent = "";
+
       });
+
   }
 
 
-  /* =====================================================
-     COLLECT PAYLOAD
-  ====================================================== */
+  // =========================================================
+  // COLLECT PAYLOAD
+  // =========================================================
 
   function collectPayload() {
 
@@ -198,72 +407,70 @@
       age:
         fd.get("age") === ""
           ? NaN
-          : parseInt(fd.get("age"), 10),
+          : Number(fd.get("age")),
 
       gender:
-        fd.get("gender") || "",
+        (fd.get("gender") || "").trim(),
 
       country:
         (fd.get("country") || "").trim(),
 
       academic_level:
-        fd.get("academic_level") || "",
+        (fd.get("academic_level") || "").trim(),
 
       most_used_platform:
-        fd.get("most_used_platform") || "",
+        (fd.get("most_used_platform") || "").trim(),
 
       purpose_of_use:
-        fd.get("purpose_of_use") || "",
+        (fd.get("purpose_of_use") || "").trim(),
 
       avg_daily_usage_hours:
         fd.get("avg_daily_usage_hours") === ""
           ? NaN
-          : parseFloat(
+          : Number(
               fd.get("avg_daily_usage_hours")
             ),
 
       daily_unlocks:
         fd.get("daily_unlocks") === ""
           ? NaN
-          : parseInt(
-              fd.get("daily_unlocks"),
-              10
-            ),
+          : Number(fd.get("daily_unlocks")),
 
       study_hours:
         fd.get("study_hours") === ""
           ? NaN
-          : parseFloat(
-              fd.get("study_hours")
-            ),
+          : Number(fd.get("study_hours")),
 
       physical_activity_hours:
         fd.get("physical_activity_hours") === ""
           ? NaN
-          : parseFloat(
+          : Number(
               fd.get("physical_activity_hours")
             ),
 
       sleep_hours_per_night:
         fd.get("sleep_hours_per_night") === ""
           ? NaN
-          : parseFloat(
+          : Number(
               fd.get("sleep_hours_per_night")
             ),
 
       stress_level:
-        fd.get("stress_level") || ""
+        (fd.get("stress_level") || "").trim()
+
     };
+
   }
 
 
-  /* =====================================================
-     VALIDATION
-  ====================================================== */
+  // =========================================================
+  // VALIDATION
+  // =========================================================
 
   function validate(payload) {
 
     const errors = [];
+
 
     const numericFields = [
 
@@ -311,6 +518,7 @@
         const value =
           payload[key];
 
+
         if (
           value === "" ||
           value === null ||
@@ -319,21 +527,27 @@
 
           errors.push([
             input,
-            "This field is required."
+            "Please fill this field."
           ]);
 
-        } else if (
+          return;
+        }
+
+
+        if (
+          !Number.isFinite(value) ||
           value < min ||
           value > max
         ) {
 
+          const maxText =
+            max === Infinity
+              ? "any value"
+              : max;
+
           errors.push([
             input,
-            `Must be between ${min} and ${
-              max === Infinity
-                ? "0+"
-                : max
-            }.`
+            `Enter a value between ${min} and ${maxText}.`
           ]);
 
         }
@@ -342,25 +556,34 @@
     );
 
 
-    [
+    const requiredTextFields = [
+
       "gender",
       "country",
       "academic_level",
       "most_used_platform",
       "purpose_of_use"
-    ].forEach((key) => {
+
+    ];
+
+
+    requiredTextFields.forEach((key) => {
 
       const input =
         document.getElementById(key);
 
+      const value =
+        payload[key];
+
+
       if (
-        !payload[key] ||
-        String(payload[key]).trim() === ""
+        !value ||
+        String(value).trim() === ""
       ) {
 
         errors.push([
           input,
-          "This field is required."
+          "Please fill this field."
         ]);
 
       }
@@ -368,87 +591,90 @@
     });
 
 
-    if (!payload.stress_level) {
+    // Stress
+    if (
+      !payload.stress_level ||
+      payload.stress_level.trim() === ""
+    ) {
 
       errors.push([
         stressInput,
-        "Pick a stress level."
+        "Please select your stress level."
       ]);
 
     }
 
 
     return errors;
+
   }
 
 
-  /* =====================================================
-     UI STATES
-  ====================================================== */
+  // =========================================================
+  // RESULT STATES
+  // =========================================================
 
-  function showState(name) {
+  function showState(stateName) {
 
-    const states = {
+    const states = [
+
+      stateIdle,
+      stateLoading,
+      stateResult,
+      stateError
+
+    ];
+
+
+    states.forEach((state) => {
+
+      if (!state) {
+        return;
+      }
+
+      state.hidden = true;
+      state.style.display = "none";
+
+    });
+
+
+    const selectedState = {
+
       idle: stateIdle,
       loading: stateLoading,
       result: stateResult,
       error: stateError
-    };
 
-    Object.values(states)
-      .forEach((element) => {
-
-        if (!element) return;
-
-        element.hidden = true;
-        element.style.display = "none";
-
-      });
+    }[stateName];
 
 
-    const selected = states[name];
+    if (selectedState) {
 
-    if (selected) {
-
-      selected.hidden = false;
-      selected.style.display = "";
+      selectedState.hidden = false;
+      selectedState.style.display = "";
 
     }
+
   }
 
 
   showState("idle");
 
 
-  /* =====================================================
-     SUBMIT BUTTON
-  ====================================================== */
+  // =========================================================
+  // SCORE BAND
+  // =========================================================
 
-  function setSubmitting(value) {
-
-    submitBtn.disabled = value;
-
-    submitBtn.classList.toggle(
-      "loading",
-      value
-    );
-  }
-
-
-  /* =====================================================
-     SCORE BAND
-  ====================================================== */
-
-  function bandFor(score) {
+  function getScoreBand(score) {
 
     if (score < 4) {
 
       return {
 
-        label: "SIGNAL: STRAINED",
+        label: "Signal: strained",
 
         context:
-          "Your responses suggest elevated strain right now. Small shifts in sleep or screen time may help support your routine."
+          "Your reported habits correspond to a lower model score. This prediction is informational and is not a diagnosis."
 
       };
 
@@ -459,10 +685,10 @@
 
       return {
 
-        label: "SIGNAL: BALANCED",
+        label: "Signal: balanced",
 
         context:
-          "Your rhythm looks fairly steady, with some room to recover and reset."
+          "Your reported habits correspond to a middle-range model score. This prediction is informational and is not a diagnosis."
 
       };
 
@@ -471,84 +697,134 @@
 
     return {
 
-      label: "SIGNAL: STRONG",
+      label: "Signal: strong",
 
       context:
-        "Your habits point to a well-supported baseline. Keep building consistent daily habits."
+        "Your reported habits correspond to a higher model score. This prediction is informational and is not a diagnosis."
 
     };
 
   }
 
 
-  /* =====================================================
-     RESULT
-  ====================================================== */
+  // =========================================================
+  // RENDER RESULT
+  // =========================================================
 
   function renderResult(score) {
 
-    const clamped =
+    const numericScore = Number(score);
+
+
+    if (!Number.isFinite(numericScore)) {
+
+      renderError(
+        "Invalid prediction",
+        "The server returned an invalid score."
+      );
+
+      return;
+
+    }
+
+
+    const clampedScore =
       Math.max(
         0,
-        Math.min(10, score)
+        Math.min(10, numericScore)
       );
 
 
-    const {
-      label,
-      context
-    } = bandFor(clamped);
+    const band =
+      getScoreBand(clampedScore);
 
 
-    scoreNumberEl.textContent =
-      score.toFixed(2);
+    if (scoreNumberEl) {
 
-    scoreBandEl.textContent =
-      label;
+      scoreNumberEl.textContent =
+        numericScore.toFixed(2);
 
-    scoreContextEl.textContent =
-      context;
+    }
+
+
+    if (scoreBandEl) {
+
+      scoreBandEl.textContent =
+        band.label;
+
+    }
+
+
+    if (scoreContextEl) {
+
+      scoreContextEl.textContent =
+        band.context;
+
+    }
+
+
+    // Gauge
+    if (gaugeFill) {
+
+      const percentage =
+        clampedScore / 10;
+
+      gaugeFill.style.width =
+        `${percentage * 100}%`;
+
+    }
 
 
     showState("result");
 
-    resultSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+
+    // =====================================================
+    // IMPORTANT:
+    // Automatically move to RESULT PANEL
+    // =====================================================
+
+    setTimeout(() => {
+
+      moveToCalculator(
+        calculatorPanels.length - 1
+      );
+
+    }, 150);
+
   }
 
 
-  /* =====================================================
-     ERROR
-  ====================================================== */
+  // =========================================================
+  // ERROR
+  // =========================================================
 
   function renderError(label, message) {
 
-    errorLabelEl.textContent =
-      label;
+    if (errorLabelEl) {
+      errorLabelEl.textContent = label;
+    }
 
-    errorCopyEl.textContent =
-      message;
+
+    if (errorCopyEl) {
+      errorCopyEl.textContent = message;
+    }
+
 
     showState("error");
 
-    resultSection.scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
   }
 
 
-  /* =====================================================
-     SERVER VALIDATION
-  ====================================================== */
+  // =========================================================
+  // FASTAPI VALIDATION ERRORS
+  // =========================================================
 
   function applyServerValidationErrors(detail) {
 
     if (!Array.isArray(detail)) {
       return false;
     }
+
 
     let matched = false;
 
@@ -557,9 +833,7 @@
 
       const field =
         Array.isArray(error.loc)
-          ? error.loc[
-              error.loc.length - 1
-            ]
+          ? error.loc[error.loc.length - 1]
           : null;
 
 
@@ -579,23 +853,24 @@
 
         setFieldError(
           target,
-          error.msg ||
-            "Invalid value."
+          error.msg || "Invalid value."
         );
 
         matched = true;
+
       }
 
     });
 
 
     return matched;
+
   }
 
 
-  /* =====================================================
-     FORM SUBMIT
-  ====================================================== */
+  // =========================================================
+  // SUBMIT / READ MY SIGNAL
+  // =========================================================
 
   form.addEventListener(
     "submit",
@@ -603,44 +878,114 @@
 
       event.preventDefault();
 
+
       clearAllErrors();
 
+
+      // Collect everything
       const payload =
         collectPayload();
 
-      const clientErrors =
+
+      // Validate everything
+      const errors =
         validate(payload);
 
 
-      if (clientErrors.length > 0) {
+      // =====================================================
+      // IF SOMETHING IS MISSING
+      // =====================================================
 
-        clientErrors.forEach(
+      if (errors.length > 0) {
+
+        errors.forEach(
           ([input, message]) => {
 
-            setFieldError(
-              input,
-              message
-            );
+            if (input) {
+
+              setFieldError(
+                input,
+                message
+              );
+
+            }
 
           }
         );
 
-        clientErrors[0][0]?.focus?.();
 
-        updateInputCount();
+        // Move to the first panel containing an error
+        const firstErrorInput =
+          errors[0]?.[0];
+
+
+        if (firstErrorInput) {
+
+          const errorPanel =
+            firstErrorInput.closest(
+              ".calc-panel"
+            );
+
+
+          if (errorPanel) {
+
+            const panelIndex =
+              calculatorPanels.indexOf(
+                errorPanel
+              );
+
+
+            if (panelIndex >= 0) {
+
+              moveToCalculator(
+                panelIndex
+              );
+
+            }
+
+          }
+
+
+          if (
+            typeof firstErrorInput.focus ===
+            "function"
+          ) {
+
+            setTimeout(() => {
+
+              firstErrorInput.focus();
+
+            }, 300);
+
+          }
+
+        }
+
 
         return;
+
       }
 
 
-      setSubmitting(true);
+      // =====================================================
+      // ALL INPUTS ARE VALID
+      // =====================================================
 
+      if (submitBtn) {
+
+        submitBtn.disabled = true;
+        submitBtn.classList.add("loading");
+
+      }
+
+
+      // Go to result panel while processing
       showState("loading");
 
-      resultSection.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-      });
+
+      moveToCalculator(
+        calculatorPanels.length - 1
+      );
 
 
       try {
@@ -658,11 +1003,14 @@
 
               body:
                 JSON.stringify(payload)
+
             }
           );
 
 
-        /* 422 */
+        // =================================================
+        // FASTAPI 422
+        // =================================================
 
         if (response.status === 422) {
 
@@ -680,22 +1028,26 @@
 
 
           renderError(
-            "CHECK YOUR INPUTS",
+            "Check your inputs",
             matched
-              ? "A few fields need attention. Details are marked above."
-              : "The API rejected this submission. Please review your inputs."
+              ? "Please correct the highlighted fields."
+              : "Some of the submitted values were rejected."
           );
 
+
           return;
+
         }
 
 
-        /* OTHER ERRORS */
+        // =================================================
+        // OTHER API ERROR
+        // =================================================
 
         if (!response.ok) {
 
           let message =
-            `The API responded with status ${response.status}.`;
+            `Server error (${response.status}).`;
 
 
           const body =
@@ -708,55 +1060,76 @@
             body &&
             typeof body.detail === "string"
           ) {
+
             message =
               body.detail;
+
           }
 
 
           renderError(
-            "PREDICTION FAILED",
+            "Prediction failed",
             message
           );
 
+
           return;
+
         }
 
 
-        /* SUCCESS */
+        // =================================================
+        // SUCCESS
+        // =================================================
 
         const data =
           await response.json();
 
 
+        const score =
+          data.predicted_mental_health_score;
+
+
         if (
-          typeof
-            data.predicted_mental_health_score
-          !== "number"
+          typeof score !== "number" ||
+          !Number.isFinite(score)
         ) {
 
           renderError(
-            "UNEXPECTED RESPONSE",
-            "The API responded, but the predicted score was missing."
+            "Unexpected response",
+            "The server responded, but no valid prediction score was returned."
           );
 
+
           return;
+
         }
 
 
-        renderResult(
-          data.predicted_mental_health_score
-        );
+        renderResult(score);
+
 
       } catch (error) {
 
+        console.error(
+          "Prediction request failed:",
+          error
+        );
+
+
         renderError(
-          "SERVER UNAVAILABLE",
-          `Couldn't connect to ${API_BASE}. Make sure the backend is running with: uvicorn main:app --reload`
+          "Can't reach the server",
+          `Couldn't connect to ${API_BASE}. Make sure FastAPI is running with: uvicorn main:app --reload`
         );
 
       } finally {
 
-        setSubmitting(false);
+        if (submitBtn) {
+
+          submitBtn.disabled = false;
+          submitBtn.classList.remove("loading");
+
+        }
 
       }
 
@@ -764,186 +1137,401 @@
   );
 
 
-  /* =====================================================
-     CLEAR ERRORS + COUNT
-  ====================================================== */
+  // =========================================================
+  // CLEAR ERRORS WHEN USER CHANGES INPUT
+  // =========================================================
 
   form
-    .querySelectorAll("input, select")
-    .forEach((element) => {
+    .querySelectorAll(
+      "input, select"
+    )
+    .forEach((input) => {
 
-      element.addEventListener(
+      input.addEventListener(
         "input",
-        () => {
-          clearFieldError(element);
-          updateInputCount();
-        }
+        () => clearFieldError(input)
       );
 
-      element.addEventListener(
+
+      input.addEventListener(
         "change",
-        () => {
-          clearFieldError(element);
-          updateInputCount();
-        }
+        () => clearFieldError(input)
       );
 
     });
 
 
-  /* =====================================================
-     RESET
-  ====================================================== */
+  // =========================================================
+  // RESET
+  // =========================================================
 
-  resetBtn.addEventListener(
+  resetBtn?.addEventListener(
     "click",
     () => {
 
       showState("idle");
 
-      document
-        .getElementById("calibrate")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
+      clearAllErrors();
+
+      moveToCalculator(0);
 
     }
   );
 
 
-  errorRetryBtn.addEventListener(
+  errorRetryBtn?.addEventListener(
     "click",
     () => {
 
       showState("idle");
 
-      document
-        .getElementById("calibrate")
-        .scrollIntoView({
-          behavior: "smooth"
-        });
+      clearAllErrors();
+
+      moveToCalculator(0);
 
     }
   );
 
 
-  /* =====================================================
-     DEV MODE
-     Cmd/Ctrl + Shift + D
-  ====================================================== */
+  // =========================================================
+  // DEV MODE
+  // CMD + SHIFT + D / CTRL + SHIFT + D
+  // =========================================================
 
   if (DEV_MODE) {
 
-    function fillDemoData() {
+    function setSelectValue(
+      id,
+      value
+    ) {
 
-      document.getElementById("age").value =
-        20;
-
-      document.getElementById("country").value =
-        "India";
-
-      document.getElementById(
-        "avg_daily_usage_hours"
-      ).value = 5;
-
-      document.getElementById(
-        "daily_unlocks"
-      ).value = 60;
-
-      document.getElementById(
-        "study_hours"
-      ).value = 6;
-
-      document.getElementById(
-        "physical_activity_hours"
-      ).value = 2;
-
-      document.getElementById(
-        "sleep_hours_per_night"
-      ).value = 8;
+      const select =
+        document.getElementById(id);
 
 
-      function setSelect(id, text) {
+      if (!select) {
 
-        const select =
-          document.getElementById(id);
+        console.warn(
+          `DEV MODE: #${id} not found`
+        );
 
-        const option =
-          [...select.options]
-            .find(
-              (option) =>
-                option.text
-                  .trim()
-                  .toLowerCase() ===
-                text.toLowerCase()
-            );
-
-
-        if (option) {
-
-          select.value =
-            option.value;
-
-          select.dispatchEvent(
-            new Event(
-              "change",
-              {
-                bubbles: true
-              }
-            )
-          );
-
-        }
+        return false;
 
       }
 
 
-      setSelect(
+      const option =
+        [...select.options].find(
+          (option) =>
+            option.value === value ||
+            option.text.trim() === value
+        );
+
+
+      if (!option) {
+
+        console.warn(
+          `DEV MODE: value "${value}" not found for #${id}`
+        );
+
+        return false;
+
+      }
+
+
+      select.value =
+        option.value;
+
+
+      // Activate corresponding custom button
+      const buttons =
+        document.querySelectorAll(
+          `[data-select="${id}"]`
+        );
+
+
+      buttons.forEach((button) => {
+
+        button.classList.toggle(
+          "active",
+          button.dataset.value ===
+            option.value
+        );
+
+      });
+
+
+      select.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+
+      return true;
+
+    }
+
+
+    function setPlatform(value) {
+
+      const select =
+        document.getElementById(
+          "most_used_platform"
+        );
+
+
+      if (!select) {
+        return;
+      }
+
+
+      select.value = value;
+
+
+      document
+        .querySelectorAll(
+          "[data-platform]"
+        )
+        .forEach((button) => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.platform ===
+              value
+          );
+
+        });
+
+
+      select.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+    }
+
+
+    function setPurpose(value) {
+
+      const select =
+        document.getElementById(
+          "purpose_of_use"
+        );
+
+
+      if (!select) {
+        return;
+      }
+
+
+      select.value = value;
+
+
+      document
+        .querySelectorAll(
+          "[data-purpose]"
+        )
+        .forEach((button) => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.purpose ===
+              value
+          );
+
+        });
+
+
+      select.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+    }
+
+
+    function setStress(value) {
+
+      const input =
+        document.getElementById(
+          "stress_level"
+        );
+
+
+      if (!input) {
+        return;
+      }
+
+
+      input.value = value;
+
+
+      document
+        .querySelectorAll(
+          "[data-stress]"
+        )
+        .forEach((button) => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.stress ===
+              value
+          );
+
+        });
+
+
+      const display =
+        document.getElementById(
+          "pressure-display"
+        );
+
+
+      if (display) {
+
+        display.textContent =
+          value.toUpperCase();
+
+      }
+
+
+      input.dispatchEvent(
+        new Event(
+          "change",
+          {
+            bubbles: true
+          }
+        )
+      );
+
+    }
+
+
+    function fillDemoData() {
+
+      // -----------------------------------------------
+      // NUMERIC / TEXT INPUTS
+      // -----------------------------------------------
+
+      const values = {
+
+        age: "20",
+
+        country: "India",
+
+        avg_daily_usage_hours: "10",
+
+        daily_unlocks: "200",
+
+        study_hours: "8",
+
+        physical_activity_hours: "2",
+
+        sleep_hours_per_night: "8"
+
+      };
+
+
+      Object.entries(values)
+        .forEach(
+          ([id, value]) => {
+
+            const input =
+              document.getElementById(id);
+
+
+            if (!input) {
+
+              console.warn(
+                `DEV MODE: #${id} not found`
+              );
+
+              return;
+
+            }
+
+
+            input.value = value;
+
+
+            input.dispatchEvent(
+              new Event(
+                "input",
+                {
+                  bubbles: true
+                }
+              )
+            );
+
+
+            input.dispatchEvent(
+              new Event(
+                "change",
+                {
+                  bubbles: true
+                }
+              )
+            );
+
+          }
+        );
+
+
+      // -----------------------------------------------
+      // SELECTS
+      // -----------------------------------------------
+
+      setSelectValue(
         "gender",
         "Male"
       );
 
-      setSelect(
+
+      setSelectValue(
         "academic_level",
         "Undergraduate"
       );
 
-      setSelect(
-        "most_used_platform",
+
+      setPlatform(
         "YouTube"
       );
 
-      setSelect(
-        "purpose_of_use",
+
+      setPurpose(
         "Education"
       );
 
 
-      const mediumButton =
-        [
-          ...stressGroup.querySelectorAll(
-            ".seg-btn"
-          )
-        ].find(
-          (button) =>
-            button.dataset.value ===
-            "Medium"
-        );
+      // -----------------------------------------------
+      // STRESS
+      // -----------------------------------------------
 
+      setStress(
+        "Medium"
+      );
 
-      if (mediumButton) {
-        mediumButton.click();
-      }
-
-
-      updateInputCount();
 
       console.log(
-        "DEV MODE: Demo data filled."
+        "DEV MODE: ALL demo inputs filled."
       );
+
     }
 
 
+    // Keyboard shortcut
     document.addEventListener(
       "keydown",
       (event) => {
@@ -967,53 +1555,8 @@
   }
 
 
-  /* =====================================================
-     CURSOR EFFECT
-  ====================================================== */
-
-  const cursorGlow =
-    document.querySelector(".cursor-glow");
-
-  if (cursorGlow) {
-
-    document.addEventListener(
-      "mousemove",
-      (event) => {
-
-        cursorGlow.style.left =
-          `${event.clientX}px`;
-
-        cursorGlow.style.top =
-          `${event.clientY}px`;
-
-      }
-    );
-
-  }
-
-
-  /* =====================================================
-     HERO CTA
-  ====================================================== */
-
-  document
-    .querySelector(".hero-cta")
-    ?.addEventListener(
-      "click",
-      (event) => {
-
-        event.preventDefault();
-
-        document
-          .getElementById("calibrate")
-          .scrollIntoView({
-            behavior: "smooth"
-          });
-
-      }
-    );
-
-
-  updateInputCount();
+  console.log(
+    "Mental Signal JS loaded successfully."
+  );
 
 })();

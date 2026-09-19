@@ -1,919 +1,1574 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
 
-  <meta
-    name="description"
-    content="Mental Signal — an experimental machine learning experience for exploring student wellness patterns."
-  />
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-  <title>Mental Signal — Read Your Pattern</title>
+    <meta
+        name="description"
+        content="Mental Signal — an experimental machine-learning experience for student wellness."
+    >
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Mental Signal</title>
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
-    rel="stylesheet"
-  >
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-  <link rel="stylesheet" href="style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="style.css">
 </head>
+
 
 <body>
 
-  <!-- =====================================================
-       GLOBAL VISUALS
-  ====================================================== -->
+<div class="grain"></div>
+<div class="cursor-glow"></div>
 
-  <div class="grain"></div>
-  <div class="cursor-glow"></div>
 
-  <!-- =====================================================
-       NAV
-  ====================================================== -->
+<!-- =====================================================
+     FIXED NAV
+===================================================== -->
 
-  <nav class="nav">
-    <a href="#" class="logo">
-      <span class="logo-symbol">◒</span>
-      <span>MENTAL SIGNAL</span>
+<header class="nav">
+
+    <a href="#hero" class="brand">
+
+        <span class="brand-wave">
+            ∿
+        </span>
+
+        <span>
+            MENTAL<br>
+            SIGNAL
+        </span>
+
     </a>
 
-    <div class="nav-right">
-      <span>ML EXPERIMENT 01</span>
-      <span class="live-dot"></span>
-      <span>LIVE</span>
+
+    <!-- <div class="nav-center">
+
+        <span class="live-dot"></span>
+
+        STUDENT WELLNESS / ML EXPERIMENT
+
+    </div> -->
+
+
+    <!-- <div class="nav-right">
+
+        NOT A CLINICAL<br>
+        ASSESSMENT
+
+    </div> -->
+
+</header>
+
+
+<!-- =====================================================
+     SIDE NAV
+===================================================== -->
+
+<!-- <div class="side-nav">
+
+    <div class="side-track">
+
+        <span class="side-dot active"></span>
+        <span class="side-dot"></span>
+        <span class="side-dot"></span>
+
     </div>
-  </nav>
+
+    <span class="side-current">
+        01
+    </span>
+
+    <span class="side-total">
+        / 03
+    </span>
+
+</div> -->
 
 
-  <!-- =====================================================
-       HERO
-  ====================================================== -->
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-  <main>
-
-    <section class="hero">
-
-      <div class="hero-meta">
-        <span>STUDENT WELLNESS</span>
-        <span>01 / 07</span>
-      </div>
-
-      <div class="hero-title">
-        <div class="title-line">
-          YOUR
-        </div>
-
-        <div class="title-line offset">
-          HABITS
-          <span class="title-symbol">↗</span>
-        </div>
-
-        <div class="title-line">
-          LEAVE A
-        </div>
-
-        <div class="title-line signal-word">
-          SIGNAL<span>.</span>
-        </div>
-      </div>
+<main>
 
 
-      <div class="hero-bottom">
+<!-- =====================================================
+     TOP HORIZONTAL EXPERIENCE
+===================================================== -->
 
-        <p>
-          An experimental machine-learning experience
-          that turns everyday student habits into a
-          single wellness signal.
-        </p>
-
-        <a href="#calibrate" class="hero-cta">
-          <span>READ MY SIGNAL</span>
-          <strong>↓</strong>
-        </a>
-
-      </div>
+<section
+    class="experience"
+    id="experience"
+>
 
 
-      <!-- BIG ORBIT -->
-      <div class="hero-orbit">
-
-        <div class="orbit-ring ring-1"></div>
-        <div class="orbit-ring ring-2"></div>
-        <div class="orbit-ring ring-3"></div>
-
-        <div class="orbit-cross cross-x"></div>
-        <div class="orbit-cross cross-y"></div>
-
-        <div class="orbit-core">
-          <span>AI</span>
-          <i></i>
-        </div>
-
-        <div class="orbit-point point-1"></div>
-        <div class="orbit-point point-2"></div>
-        <div class="orbit-point point-3"></div>
-
-      </div>
-
-    </section>
+    <div
+        class="experience-track"
+        id="experience-track"
+    >
 
 
-    <!-- =====================================================
-         STORY SECTION
-    ====================================================== -->
+        <!-- =================================================
+             PANEL 01 — HERO
+        ================================================== -->
 
-    <section class="story">
+        <article
+            class="experience-panel hero-panel"
+            id="hero"
+        >
 
-      <div class="section-number">02</div>
+            <!-- stars -->
+            <div class="stars"></div>
 
-      <div class="story-heading">
-        <span class="tiny-label">THE IDEA</span>
-
-        <h2>
-          BEFORE A SCORE,
-          <em>THERE IS A PATTERN.</em>
-        </h2>
-      </div>
-
-      <div class="story-copy">
-        <p>
-          Sleep. Study. Movement. Screen time.
-          Stress. Digital habits.
-        </p>
-
-        <p>
-          Your routine creates signals.
-          The model looks for patterns inside them.
-        </p>
-      </div>
+            <div class="shooting-star"></div>
 
 
-      <div class="signal-list">
+            <!-- orbital system -->
 
-        <div class="signal-item">
-          <span>01</span>
-          <strong>SLEEP</strong>
-          <i>◌</i>
-        </div>
+            <div class="planet-system">
 
-        <div class="signal-item">
-          <span>02</span>
-          <strong>STUDY</strong>
-          <i>◌</i>
-        </div>
+                <div class="planet planet-one"></div>
+                <div class="planet planet-two"></div>
+                <div class="planet planet-three"></div>
 
-        <div class="signal-item">
-          <span>03</span>
-          <strong>MOVEMENT</strong>
-          <i>◌</i>
-        </div>
+                <div class="orbit-line orbit-one"></div>
+                <div class="orbit-line orbit-two"></div>
+                <div class="orbit-line orbit-three"></div>
 
-        <div class="signal-item">
-          <span>04</span>
-          <strong>DIGITAL</strong>
-          <i>◌</i>
-        </div>
-
-        <div class="signal-item">
-          <span>05</span>
-          <strong>STRESS</strong>
-          <i>◌</i>
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =====================================================
-         CALIBRATION
-    ====================================================== -->
-
-    <section class="calibrate" id="calibrate">
-
-      <div class="section-number">03</div>
-
-      <div class="calibrate-header">
-
-        <div>
-          <span class="tiny-label">SIGNAL CALIBRATION</span>
-
-          <h2>
-            TELL THE MODEL
-            <br>
-            <span>ABOUT YOUR DAY.</span>
-          </h2>
-        </div>
-
-        <div class="progress-info">
-          <span>INPUTS</span>
-          <strong id="input-count">00 / 12</strong>
-        </div>
-
-      </div>
-
-
-      <form id="predict-form" novalidate>
-
-
-        <!-- ================= PROFILE ================= -->
-
-        <div class="input-section">
-
-          <div class="input-section-heading">
-            <span>01</span>
-            <div>
-              <small>IDENTITY SIGNAL</small>
-              <h3>WHO ARE YOU?</h3>
             </div>
-          </div>
 
 
-          <div class="creative-grid">
+            <div class="hero-content">
 
-            <div class="field huge-field">
-              <label for="age">
-                AGE
-                <span>*</span>
-              </label>
+                <span class="eyebrow">
+                    YOUR EVERYDAY LIFE
+                </span>
 
-              <div class="big-input">
-                <input
-                  type="number"
-                  id="age"
-                  name="age"
-                  min="10"
-                  max="100"
-                  step="1"
-                  required
-                  placeholder="21"
+
+                <h1>
+
+                    YOUR<br>
+                    HABITS<br>
+                    LEAVE A<br>
+
+                    <em>
+                        SIGNAL.
+                    </em>
+
+                </h1>
+
+
+                <p>
+
+                    Every scroll, sleep, class and
+                    break tells a story.
+
+                    <br>
+
+                    Let's decode the pattern
+                    with machine learning.
+
+                </p>
+
+
+                <!-- <button
+                    class="explore-button"
+                    id="explore-button"
                 >
-                <span>YEARS</span>
-              </div>
 
-              <span class="hint">10–100 years</span>
-              <span class="error-msg"></span>
+                    <span>
+                        →
+                    </span>
+
+                    EXPLORE
+
+                </button> -->
+
             </div>
 
 
-            <div class="field huge-field">
-              <label for="gender">
-                GENDER
-                <span>*</span>
-              </label>
+            <!-- human-like signal silhouette -->
 
-              <select id="gender" name="gender" required>
-                <option value="" disabled selected>SELECT</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
+            <div class="human-signal">
 
-              <span class="error-msg"></span>
+                <div class="head"></div>
+
+                <div class="shoulder"></div>
+
+                <div class="signal-glow"></div>
+
             </div>
 
 
-            <div class="field huge-field field-wide">
-              <label for="country">
-                WHERE ARE YOU FROM?
-                <span>*</span>
-              </label>
+            <!-- <div class="hero-bottom">
 
-              <input
-                type="text"
-                id="country"
-                name="country"
-                list="country-list"
-                required
-                placeholder="India"
-                autocomplete="off"
-              >
+                <span>
+                    BEHAVIOUR
+                </span>
 
-              <datalist id="country-list">
-                <option value="India">
-                <option value="USA">
-                <option value="Canada">
-                <option value="Australia">
-                <option value="UK">
-                <option value="Germany">
-                <option value="Mexico">
-                <option value="Turkey">
-                <option value="France">
-              </datalist>
+                <span>
+                    PATTERN
+                </span>
 
-              <span class="hint">Not listed? Type it anyway.</span>
-              <span class="error-msg"></span>
-            </div>
+                <span>
+                    POSSIBILITIES
+                </span>
 
-          </div>
+                <span>
+                    SCROLL OR SWIPE →
+                </span>
 
-        </div>
+            </div> -->
+
+        </article>
 
 
-        <!-- ================= DIGITAL ================= -->
 
-        <div class="input-section dark-section">
+        <!-- =================================================
+             PANEL 02 — PATTERN
+        ================================================== -->
 
-          <div class="input-section-heading">
-            <span>02</span>
-            <div>
-              <small>DIGITAL SIGNAL</small>
-              <h3>YOUR ONLINE LIFE.</h3>
-            </div>
-          </div>
+        <article class="experience-panel pattern-panel">
 
-
-          <div class="creative-grid">
-
-            <div class="field huge-field">
-              <label for="academic_level">
-                ACADEMIC LEVEL
-                <span>*</span>
-              </label>
-
-              <select
-                id="academic_level"
-                name="academic_level"
-                required
-              >
-                <option value="" disabled selected>SELECT</option>
-                <option value="High School">High School</option>
-                <option value="Undergraduate">Undergraduate</option>
-                <option value="Graduate">Graduate</option>
-              </select>
-
-              <span class="error-msg"></span>
+            <div class="panel-index">
+                02 / 03
             </div>
 
 
-            <div class="field huge-field">
-              <label for="most_used_platform">
-                YOUR PLATFORM
-                <span>*</span>
-              </label>
+            <div class="pattern-content">
 
-              <select
-                id="most_used_platform"
-                name="most_used_platform"
-                required
-              >
-                <option value="" disabled selected>SELECT</option>
-                <option value="Facebook">Facebook</option>
-                <option value="Instagram">Instagram</option>
-                <option value="Snapchat">Snapchat</option>
-                <option value="Twitter">Twitter</option>
-                <option value="YouTube">YouTube</option>
-                <option value="TikTok">TikTok</option>
-                <option value="LinkedIn">LinkedIn</option>
-                <option value="LINE">LINE</option>
-                <option value="KakaoTalk">KakaoTalk</option>
-                <option value="VKontakte">VKontakte</option>
-                <option value="WhatsApp">WhatsApp</option>
-                <option value="WeChat">WeChat</option>
-              </select>
+                <span class="eyebrow dark">
+                    THE IDEA
+                </span>
 
-              <span class="error-msg"></span>
+
+                <h2>
+
+                    BEFORE A SCORE,<br>
+
+                    THERE IS A
+                    <em>PATTERN.</em>
+
+                </h2>
+
+
+                <p class="pattern-description">
+
+                    Sleep. Study. Movement.
+                    Screen time. Stress.
+                    Digital habits.
+
+                    <br><br>
+
+                    Your routine creates signals.
+                    The model looks for patterns
+                    inside them.
+
+                </p>
+
+
+                <div class="signal-list">
+
+                    <div class="signal-item">
+
+                        <small>01</small>
+
+                        <strong>
+                            SLEEP
+                        </strong>
+
+                        <span>
+                            RECOVERY
+                        </span>
+
+                        <i></i>
+
+                    </div>
+
+
+                    <div class="signal-item">
+
+                        <small>02</small>
+
+                        <strong>
+                            STUDY
+                        </strong>
+
+                        <span>
+                            FOCUS
+                        </span>
+
+                        <i></i>
+
+                    </div>
+
+
+                    <div class="signal-item">
+
+                        <small>03</small>
+
+                        <strong>
+                            MOVEMENT
+                        </strong>
+
+                        <span>
+                            ACTIVITY
+                        </span>
+
+                        <i></i>
+
+                    </div>
+
+
+                    <div class="signal-item">
+
+                        <small>04</small>
+
+                        <strong>
+                            DIGITAL
+                        </strong>
+
+                        <span>
+                            SCREEN LIFE
+                        </span>
+
+                        <i></i>
+
+                    </div>
+
+
+                    <div class="signal-item">
+
+                        <small>05</small>
+
+                        <strong>
+                            STRESS
+                        </strong>
+
+                        <span>
+                            PRESSURE
+                        </span>
+
+                        <i></i>
+
+                    </div>
+
+                </div>
+
             </div>
 
 
-            <div class="field huge-field">
-              <label for="purpose_of_use">
-                WHY ARE YOU ONLINE?
-                <span>*</span>
-              </label>
+            <div class="floating-orb orb-pattern"></div>
 
-              <select
-                id="purpose_of_use"
-                name="purpose_of_use"
-                required
-              >
-                <option value="" disabled selected>SELECT</option>
-                <option value="Networking">Networking</option>
-                <option value="Education">Education</option>
-                <option value="Entertainment">Entertainment</option>
-                <option value="News">News</option>
-              </select>
+        </article>
 
-              <span class="error-msg"></span>
+
+
+        <!-- =================================================
+             PANEL 03 — BIG SIGNALS
+        ================================================== -->
+
+        <article class="experience-panel signal-panel">
+
+            <div class="signal-stars"></div>
+
+            <div class="panel-index">
+                03 / 03
             </div>
 
 
-            <div class="field huge-field">
-              <label for="avg_daily_usage_hours">
-                SCREEN TIME
-                <span>*</span>
-              </label>
+            <div class="signal-content">
 
-              <div class="big-input">
-                <input
-                  type="number"
-                  id="avg_daily_usage_hours"
-                  name="avg_daily_usage_hours"
-                  min="0"
-                  max="24"
-                  step="0.1"
-                  required
-                  placeholder="5"
+                <span class="eyebrow">
+                    A BRIGHTER TOMORROW
+                </span>
+
+
+                <h2>
+
+                    SMALL<br>
+                    HABITS.
+
+                    <br>
+
+                    <em>
+                        BIG SIGNALS.
+                    </em>
+
+                </h2>
+
+
+                <div class="signal-message">
+
+                    <span>
+                        01
+                    </span>
+
+                    <h3>
+
+                        A PATTERN<br>
+                        IS NOT A LABEL.
+
+                    </h3>
+
+
+                    <p>
+
+                        The prediction is generated
+                        from the information you provide
+                        to a machine-learning model.
+
+                        <br><br>
+
+                        It is a numerical signal,
+                        not a diagnosis or medical
+                        assessment.
+
+                    </p>
+
+                </div>
+
+
+                <button
+                    class="continue-button"
+                    id="continue-button"
                 >
-                <span>HRS / DAY</span>
-              </div>
 
-              <span class="error-msg"></span>
-            </div>
+                    KEEP GOING
 
+                    <span>
+                        →
+                    </span>
 
-            <div class="field huge-field field-wide">
-              <label for="daily_unlocks">
-                PHONE UNLOCKS
-                <span>*</span>
-              </label>
-
-              <div class="big-input">
-                <input
-                  type="number"
-                  id="daily_unlocks"
-                  name="daily_unlocks"
-                  min="0"
-                  step="1"
-                  required
-                  placeholder="60"
-                >
-                <span>PER DAY</span>
-              </div>
-
-              <span class="error-msg"></span>
-            </div>
-
-          </div>
-
-        </div>
-
-
-        <!-- ================= LIFESTYLE ================= -->
-
-        <div class="input-section">
-
-          <div class="input-section-heading">
-            <span>03</span>
-            <div>
-              <small>BODY SIGNAL</small>
-              <h3>YOUR DAILY RHYTHM.</h3>
-            </div>
-          </div>
-
-
-          <div class="metric-grid">
-
-            <div class="metric-field field">
-
-              <label for="study_hours">
-                <span>STUDY</span>
-                <b>01</b>
-              </label>
-
-              <div class="metric-number">
-                <input
-                  type="number"
-                  id="study_hours"
-                  name="study_hours"
-                  min="0"
-                  max="24"
-                  step="0.1"
-                  required
-                  placeholder="6"
-                >
-                <small>HRS</small>
-              </div>
-
-              <span class="error-msg"></span>
+                </button>
 
             </div>
 
 
-            <div class="metric-field field">
+            <div class="moon">
 
-              <label for="physical_activity_hours">
-                <span>MOVEMENT</span>
-                <b>02</b>
-              </label>
-
-              <div class="metric-number">
-                <input
-                  type="number"
-                  id="physical_activity_hours"
-                  name="physical_activity_hours"
-                  min="0"
-                  max="24"
-                  step="0.1"
-                  required
-                  placeholder="2"
-                >
-                <small>HRS</small>
-              </div>
-
-              <span class="error-msg"></span>
+                <div class="moon-crater crater-one"></div>
+                <div class="moon-crater crater-two"></div>
+                <div class="moon-crater crater-three"></div>
 
             </div>
 
+        </article>
 
-            <div class="metric-field field">
-
-              <label for="sleep_hours_per_night">
-                <span>SLEEP</span>
-                <b>03</b>
-              </label>
-
-              <div class="metric-number">
-                <input
-                  type="number"
-                  id="sleep_hours_per_night"
-                  name="sleep_hours_per_night"
-                  min="0"
-                  max="24"
-                  step="0.1"
-                  required
-                  placeholder="8"
-                >
-                <small>HRS</small>
-              </div>
-
-              <span class="error-msg"></span>
-
-            </div>
-
-          </div>
+    </div>
 
 
-          <!-- STRESS -->
+    <!-- top experience navigation -->
 
-          <div class="stress-block field">
-
-            <div class="stress-heading">
-              <span class="stress-number">04</span>
-
-              <div>
-                <small>PERCEPTION SIGNAL</small>
-                <h3>HOW LOUD IS THE PRESSURE?</h3>
-              </div>
-            </div>
+    <button
+        class="experience-arrow experience-left"
+        id="experience-left"
+        aria-label="Previous panel"
+    >
+        ←
+    </button>
 
 
-            <div class="stress-options" id="stress_level_group">
-
-              <button
-                type="button"
-                class="seg-btn"
-                data-value="Low"
-              >
-                <span>01</span>
-                <strong>LOW</strong>
-                <small>CALM</small>
-              </button>
-
-              <button
-                type="button"
-                class="seg-btn"
-                data-value="Medium"
-              >
-                <span>02</span>
-                <strong>MEDIUM</strong>
-                <small>MANAGEABLE</small>
-              </button>
-
-              <button
-                type="button"
-                class="seg-btn"
-                data-value="High"
-              >
-                <span>03</span>
-                <strong>HIGH</strong>
-                <small>ELEVATED</small>
-              </button>
-
-              <button
-                type="button"
-                class="seg-btn"
-                data-value="Very High"
-              >
-                <span>04</span>
-                <strong>VERY HIGH</strong>
-                <small>INTENSE</small>
-              </button>
-
-            </div>
-
-            <input
-              type="hidden"
-              id="stress_level"
-              name="stress_level"
-            >
-
-            <span class="error-msg"></span>
-
-          </div>
+    <button
+        class="experience-arrow experience-right"
+        id="experience-right"
+        aria-label="Next panel"
+    >
+        →
+    </button>
 
 
-          <!-- SUBMIT -->
+    <!-- <div class="experience-counter">
 
-          <div class="final-action">
-
-            <div class="disclaimer">
-              <span>ⓘ</span>
-              <p>
-                Informational prediction only.
-                This is not a clinical assessment.
-              </p>
-            </div>
-
-            <button
-              type="submit"
-              class="submit-btn"
-              id="submit-btn"
-            >
-              <span class="btn-label">
-                READ MY SIGNAL
-              </span>
-
-              <span class="submit-arrow">↗</span>
-
-              <span class="btn-spinner"></span>
-            </button>
-
-          </div>
-
-        </div>
-
-      </form>
-
-    </section>
-
-
-    <!-- =====================================================
-         RESULT
-    ====================================================== -->
-
-    <section class="result-section" id="result-section">
-
-      <div class="section-number result-index">04</div>
-
-      <div class="result-header">
-        <span class="tiny-label">SIGNAL DETECTED</span>
-        <span class="result-status">
-          <i></i>
-          MODEL ONLINE
+        <span id="experience-number">
+            01
         </span>
-      </div>
+
+        <span>
+            / 03
+        </span>
+
+    </div> -->
 
 
-      <div class="result-content">
+    <!-- <div class="experience-hint">
 
-        <!-- IDLE -->
+        SWIPE / DRAG / ARROW KEYS
 
-        <div
-          class="state state-idle"
-          id="state-idle"
-        >
+    </div> -->
 
-          <div class="idle-visual">
-            <div class="idle-circle">
-              <span>?</span>
-            </div>
-          </div>
-
-          <small>AWAITING YOUR SIGNAL</small>
-
-          <h2>
-            THE PATTERN
-            <br>
-            IS STILL HIDDEN.
-          </h2>
-
-          <p>
-            Complete the calibration above
-            to reveal your predicted signal.
-          </p>
-
-        </div>
+</section>
 
 
-        <!-- LOADING -->
 
-        <div
-          class="state state-loading"
-          id="state-loading"
-          hidden
-        >
+<!-- =====================================================
+     CALIBRATION
+===================================================== -->
 
-          <div class="loading-visual">
-
-            <div class="loading-ring ring-a"></div>
-            <div class="loading-ring ring-b"></div>
-            <div class="loading-ring ring-c"></div>
-
-            <div class="loading-core">
-              <span>AI</span>
-            </div>
-
-          </div>
-
-          <small>PROCESSING SIGNAL</small>
-
-          <h2 id="loading-text">
-            READING
-            <br>
-            YOUR PATTERN...
-          </h2>
-
-          <div class="loading-bar">
-            <span></span>
-          </div>
-
-        </div>
+<section
+    class="calculator"
+    id="calculator"
+>
 
 
-        <!-- RESULT -->
+    <!-- <div class="calculator-top">
 
-        <div
-          class="state state-result"
-          id="state-result"
-          hidden
-        >
+        <span>
+            SIGNAL CALIBRATION
+        </span>
 
-          <div class="result-kicker">
-            YOUR PREDICTED SIGNAL
-          </div>
+        <span id="calculator-counter">
+            01 / 05
+        </span>
 
-
-          <div class="score-layout">
-
-            <div class="score-main">
-
-              <span class="score-number" id="score-number">
-                0.00
-              </span>
-
-              <span class="score-max">
-                / 10
-              </span>
-
-            </div>
+    </div> -->
 
 
-            <div class="score-orbit">
-
-              <div class="score-ring ring-one"></div>
-              <div class="score-ring ring-two"></div>
-
-              <div class="score-ring-core">
-                <span>MS</span>
-              </div>
-
-            </div>
-
-          </div>
+    <form
+        class="calculator-track"
+        id="predict-form"
+    >
 
 
-          <div class="result-description">
+        <!-- =================================================
+             CALC 01 — IDENTITY
+        ================================================== -->
 
-            <span
-              class="score-band"
-              id="score-band"
-            >
-              —
+        <article class="calc-panel">
+
+            <span class="calc-number">
+                01
             </span>
 
-            <p
-              class="score-context"
-              id="score-context"
-            ></p>
 
-          </div>
+            <div class="calc-content">
+
+                <span class="eyebrow">
+                    START WITH YOU
+                </span>
 
 
-          <div class="result-scale">
+                <h2>
+                    IDENTITY
+                </h2>
 
-            <div>
-              <span>0</span>
-              <i></i>
+
+                <p>
+                    A few basic details help the
+                    model understand your context.
+                </p>
+
+
+                <div class="field-grid">
+
+
+                    <div class="field">
+
+                        <label>
+                            AGE
+                        </label>
+
+                        <div class="large-input">
+
+                            <input
+                                type="number"
+                                id="age"
+                                name="age"
+                                min="10"
+                                max="100"
+                                step="1"
+                                required
+                                placeholder="21"
+                            >
+
+                            <span>
+                                YEARS
+                            </span>
+
+                        </div>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            GENDER
+                        </label>
+
+                        <div class="choice-row">
+
+                            <button
+                                type="button"
+                                data-select="gender"
+                                data-value="Male"
+                            >
+                                MALE
+                            </button>
+
+                            <button
+                                type="button"
+                                data-select="gender"
+                                data-value="Female"
+                            >
+                                FEMALE
+                            </button>
+
+                        </div>
+
+
+                        <select
+                            id="gender"
+                            name="gender"
+                            class="hidden-input"
+                            required
+                        >
+
+                            <option value="">
+                                Select
+                            </option>
+
+                            <option value="Male">
+                                Male
+                            </option>
+
+                            <option value="Female">
+                                Female
+                            </option>
+
+                        </select>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            COUNTRY
+                        </label>
+
+                        <input
+                            type="text"
+                            id="country"
+                            name="country"
+                            list="country-list"
+                            required
+                            placeholder="India"
+                            autocomplete="off"
+                        >
+
+                        <datalist id="country-list">
+
+                            <option value="India">
+                            <option value="USA">
+                            <option value="Canada">
+                            <option value="Australia">
+                            <option value="UK">
+                            <option value="Germany">
+                            <option value="France">
+
+                        </datalist>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            ACADEMIC LEVEL
+                        </label>
+
+                        <div class="choice-row">
+
+                            <button
+                                type="button"
+                                data-select="academic_level"
+                                data-value="High School"
+                            >
+                                HIGH SCHOOL
+                            </button>
+
+                            <button
+                                type="button"
+                                data-select="academic_level"
+                                data-value="Undergraduate"
+                            >
+                                UNDERGRADUATE
+                            </button>
+
+                            <button
+                                type="button"
+                                data-select="academic_level"
+                                data-value="Graduate"
+                            >
+                                GRADUATE
+                            </button>
+
+                        </div>
+
+
+                        <select
+                            id="academic_level"
+                            name="academic_level"
+                            class="hidden-input"
+                            required
+                        >
+
+                            <option value=""></option>
+
+                            <option value="High School">
+                                High School
+                            </option>
+
+                            <option value="Undergraduate">
+                                Undergraduate
+                            </option>
+
+                            <option value="Graduate">
+                                Graduate
+                            </option>
+
+                        </select>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+                </div>
+
             </div>
 
-            <div>
-              <span>5</span>
-              <i></i>
+
+            <button
+                type="button"
+                class="next-calc"
+                data-next="1"
+            >
+
+                NEXT
+                <span>→</span>
+
+            </button>
+
+        </article>
+
+
+
+        <!-- =================================================
+             CALC 02 — DIGITAL
+        ================================================== -->
+
+        <article class="calc-panel dark-calc">
+
+            <span class="calc-number">
+                02
+            </span>
+
+
+            <div class="calc-content">
+
+                <span class="eyebrow">
+                    YOUR ONLINE WORLD
+                </span>
+
+
+                <h2>
+                    DIGITAL
+                </h2>
+
+
+                <p>
+                    Your digital routine leaves
+                    its own kind of signal.
+                </p>
+
+
+                <div class="big-field-grid">
+
+
+                    <div class="big-field">
+
+                        <label>
+                            DAILY SCREEN TIME
+                        </label>
+
+                        <div>
+
+                            <input
+                                type="number"
+                                id="avg_daily_usage_hours"
+                                name="avg_daily_usage_hours"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                required
+                                placeholder="5"
+                            >
+
+                            <span>
+                                HRS
+                            </span>
+
+                        </div>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+
+                    <div class="big-field">
+
+                        <label>
+                            DAILY UNLOCKS
+                        </label>
+
+                        <div>
+
+                            <input
+                                type="number"
+                                id="daily_unlocks"
+                                name="daily_unlocks"
+                                min="0"
+                                step="1"
+                                required
+                                placeholder="60"
+                            >
+
+                            <span>
+                                UNLOCKS
+                            </span>
+
+                        </div>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="selection-block">
+
+                    <label>
+                        MOST USED PLATFORM
+                    </label>
+
+
+                    <div class="pill-row">
+
+                        <button type="button" data-platform="Facebook">
+                            FACEBOOK
+                        </button>
+
+                        <button type="button" data-platform="Instagram">
+                            INSTAGRAM
+                        </button>
+
+                        <button type="button" data-platform="Snapchat">
+                            SNAPCHAT
+                        </button>
+
+                        <button type="button" data-platform="Twitter">
+                            TWITTER
+                        </button>
+
+                        <button type="button" data-platform="YouTube">
+                            YOUTUBE
+                        </button>
+
+                        <button type="button" data-platform="TikTok">
+                            TIKTOK
+                        </button>
+
+                        <button type="button" data-platform="LinkedIn">
+                            LINKEDIN
+                        </button>
+
+                        <button type="button" data-platform="LINE">
+                            LINE
+                        </button>
+
+                        <button type="button" data-platform="KakaoTalk">
+                            KAKAOTALK
+                        </button>
+
+                        <button type="button" data-platform="VKontakte">
+                            VK
+                        </button>
+
+                        <button type="button" data-platform="WhatsApp">
+                            WHATSAPP
+                        </button>
+
+                        <button type="button" data-platform="WeChat">
+                            WECHAT
+                        </button>
+
+                    </div>
+
+
+                    <select
+                        id="most_used_platform"
+                        name="most_used_platform"
+                        class="hidden-input"
+                        required
+                    >
+
+                        <option value=""></option>
+
+                        <option>Facebook</option>
+                        <option>Instagram</option>
+                        <option>Snapchat</option>
+                        <option>Twitter</option>
+                        <option>YouTube</option>
+                        <option>TikTok</option>
+                        <option>LinkedIn</option>
+                        <option>LINE</option>
+                        <option>KakaoTalk</option>
+                        <option>VKontakte</option>
+                        <option>WhatsApp</option>
+                        <option>WeChat</option>
+
+                    </select>
+
+                    <small class="error-msg"></small>
+
+                </div>
+
+
+                <div class="selection-block">
+
+                    <label>
+                        PURPOSE OF USE
+                    </label>
+
+
+                    <div class="pill-row">
+
+                        <button type="button" data-purpose="Networking">
+                            NETWORKING
+                        </button>
+
+                        <button type="button" data-purpose="Education">
+                            EDUCATION
+                        </button>
+
+                        <button type="button" data-purpose="Entertainment">
+                            ENTERTAINMENT
+                        </button>
+
+                        <button type="button" data-purpose="News">
+                            NEWS
+                        </button>
+
+                    </div>
+
+
+                    <select
+                        id="purpose_of_use"
+                        name="purpose_of_use"
+                        class="hidden-input"
+                        required
+                    >
+
+                        <option value=""></option>
+
+                        <option>Networking</option>
+                        <option>Education</option>
+                        <option>Entertainment</option>
+                        <option>News</option>
+
+                    </select>
+
+                    <small class="error-msg"></small>
+
+                </div>
+
             </div>
 
-            <div>
-              <span>10</span>
-              <i></i>
+
+            <button
+                type="button"
+                class="next-calc"
+                data-next="2"
+            >
+
+                NEXT
+                <span>→</span>
+
+            </button>
+
+        </article>
+
+
+
+        <!-- =================================================
+             CALC 03 — LIFESTYLE
+        ================================================== -->
+
+        <article class="calc-panel">
+
+            <span class="calc-number">
+                03
+            </span>
+
+
+            <div class="calc-content">
+
+                <span class="eyebrow">
+                    YOUR DAILY RHYTHM
+                </span>
+
+
+                <h2>
+                    LIFESTYLE
+                </h2>
+
+
+                <p>
+                    Three simple measurements.
+                    One snapshot of your routine.
+                </p>
+
+
+                <div class="rhythm-grid">
+
+
+                    <div class="rhythm-field">
+
+                        <label>
+                            STUDY
+                        </label>
+
+                        <div>
+
+                            <input
+                                type="number"
+                                id="study_hours"
+                                name="study_hours"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                required
+                                placeholder="6"
+                            >
+
+                            <span>
+                                H
+                            </span>
+
+                        </div>
+
+                        <div class="mini-line"></div>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+
+                    <div class="rhythm-field">
+
+                        <label>
+                            MOVEMENT
+                        </label>
+
+                        <div>
+
+                            <input
+                                type="number"
+                                id="physical_activity_hours"
+                                name="physical_activity_hours"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                required
+                                placeholder="2"
+                            >
+
+                            <span>
+                                H
+                            </span>
+
+                        </div>
+
+                        <div class="mini-line"></div>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+
+                    <div class="rhythm-field">
+
+                        <label>
+                            SLEEP
+                        </label>
+
+                        <div>
+
+                            <input
+                                type="number"
+                                id="sleep_hours_per_night"
+                                name="sleep_hours_per_night"
+                                min="0"
+                                max="24"
+                                step="0.1"
+                                required
+                                placeholder="8"
+                            >
+
+                            <span>
+                                H
+                            </span>
+
+                        </div>
+
+                        <div class="mini-line"></div>
+
+                        <small class="error-msg"></small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="frequency-wave">
+
+                    <div></div>
+                    <div></div>
+                    <div></div>
+
+                    <span>
+                        DAILY RHYTHM
+                    </span>
+
+                </div>
+
             </div>
 
-          </div>
+
+            <button
+                type="button"
+                class="next-calc"
+                data-next="3"
+            >
+
+                NEXT
+                <span>→</span>
+
+            </button>
+
+        </article>
 
 
-          <button
-            type="button"
-            class="reset-btn"
-            id="reset-btn"
-          >
-            RUN THE SIGNAL AGAIN
-            <span>↗</span>
-          </button>
 
-        </div>
+        <!-- =================================================
+             CALC 04 — PRESSURE
+        ================================================== -->
 
+        <article class="calc-panel dark-calc pressure-calc">
 
-        <!-- ERROR -->
-
-        <div
-          class="state state-error"
-          id="state-error"
-          hidden
-        >
-
-          <div class="error-visual">!</div>
-
-          <small>SIGNAL INTERRUPTED</small>
-
-          <h2 id="error-label">
-            SOMETHING WENT WRONG.
-          </h2>
-
-          <p id="error-copy"></p>
-
-          <button
-            type="button"
-            class="reset-btn"
-            id="error-retry-btn"
-          >
-            TRY AGAIN
-            <span>↗</span>
-          </button>
-
-        </div>
-
-      </div>
+            <span class="calc-number">
+                04
+            </span>
 
 
-      <div class="result-footer">
-        <span>REGRESSION MODEL</span>
-        <span>•</span>
-        <span>PREDICTION RANGE 0—10</span>
-      </div>
+            <div class="calc-content">
 
-    </section>
+                <span class="eyebrow">
+                    PERCEPTION SIGNAL
+                </span>
 
 
-    <!-- =====================================================
-         FINAL STATEMENT
-    ====================================================== -->
-
-    <section class="closing">
-
-      <div class="closing-number">05</div>
-
-      <h2>
-        SMALL HABITS.
-        <br>
-        <em>BIG SIGNALS.</em>
-      </h2>
-
-      <p>
-        Your score is a model prediction based on
-        the information you provided — not a diagnosis.
-      </p>
-
-    </section>
-
-  </main>
+                <h2>
+                    PRESSURE
+                </h2>
 
 
-  <!-- =====================================================
-       FOOTER
-  ====================================================== -->
+                <p>
+                    How loud is the pressure
+                    in your everyday life?
+                </p>
 
-  <footer>
+
+                <div class="pressure-layout">
+
+
+                    <div class="pressure-orb">
+
+                        <div class="pressure-ring ring-a"></div>
+                        <div class="pressure-ring ring-b"></div>
+                        <div class="pressure-ring ring-c"></div>
+
+                        <div class="pressure-core">
+
+                            <span id="pressure-display">
+                                ?
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="stress-options">
+
+                        <button type="button" data-stress="Low">
+
+                            <small>01</small>
+
+                            <strong>
+                                LOW
+                            </strong>
+
+                            <span>
+                                CALM
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" data-stress="Medium">
+
+                            <small>02</small>
+
+                            <strong>
+                                MEDIUM
+                            </strong>
+
+                            <span>
+                                MANAGEABLE
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" data-stress="High">
+
+                            <small>03</small>
+
+                            <strong>
+                                HIGH
+                            </strong>
+
+                            <span>
+                                ELEVATED
+                            </span>
+
+                        </button>
+
+
+                        <button type="button" data-stress="Very High">
+
+                            <small>04</small>
+
+                            <strong>
+                                VERY HIGH
+                            </strong>
+
+                            <span>
+                                INTENSE
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <input
+                    type="hidden"
+                    id="stress_level"
+                    name="stress_level"
+                >
+
+                <small
+                    class="error-msg pressure-error"
+                ></small>
+
+            </div>
+
+
+            <button
+                class="calculate-button"
+                id="calculate-button"
+                type="submit"
+            >
+
+                READ MY SIGNAL
+
+                <span>
+                    ↗
+                </span>
+
+            </button>
+
+        </article>
+
+
+
+        <!-- =================================================
+             CALC 05 — RESULT
+        ================================================== -->
+
+        <article class="calc-panel result-calc">
+
+            <!-- <span class="calc-number">
+                05
+            </span> -->
+
+
+            <div class="result-content">
+
+                <span class="eyebrow">
+                    SIGNAL DETECTED
+                </span>
+
+
+                <!-- IDLE -->
+
+                <div
+                    id="state-idle"
+                    class="result-state"
+                >
+
+                    <div class="result-orb">
+                        ?
+                    </div>
+
+                    <h2>
+
+                        THE PATTERN<br>
+                        IS STILL HIDDEN.
+
+                    </h2>
+
+                    <p>
+                        Complete your signal calibration
+                        to reveal the prediction.
+                    </p>
+
+                </div>
+
+
+                <!-- LOADING -->
+
+                <div
+                    id="state-loading"
+                    class="result-state"
+                    hidden
+                >
+
+                    <div class="loading-orb">
+
+                        <div></div>
+                        <div></div>
+                        <div></div>
+
+                        <span>
+                            AI
+                        </span>
+
+                    </div>
+
+
+                    <span class="loading-label">
+                        PROCESSING SIGNAL
+                    </span>
+
+
+                    <h2>
+                        READING<br>
+                        YOUR PATTERN...
+                    </h2>
+
+                </div>
+
+
+                <!-- RESULT -->
+
+                <div
+                    id="state-result"
+                    class="result-state"
+                    hidden
+                >
+
+                    <span>
+                        YOUR PREDICTED SIGNAL
+                    </span>
+
+
+                    <div class="score">
+
+                        <strong id="score-number">
+                            0.00
+                        </strong>
+
+                        <span>
+                            /10
+                        </span>
+
+                    </div>
+
+
+                    <div class="score-line">
+
+                        <i id="score-fill"></i>
+
+                    </div>
+
+
+                    <h3 id="score-band">
+                        —
+                    </h3>
+
+
+                    <p id="score-context"></p>
+
+
+                    <small class="medical-note">
+
+                        Informational prediction only.
+                        This is not a clinical assessment.
+
+                    </small>
+
+
+                    <button
+                        class="again-button"
+                        id="reset-btn"
+                        type="button"
+                    >
+
+                        RUN THE SIGNAL AGAIN
+
+                        <span>
+                            ↗
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                <div
+                    id="state-error"
+                    class="result-state"
+                    hidden
+                >
+
+                    <div class="error-orb">
+                        !
+                    </div>
+
+
+                    <h2 id="error-label">
+                        SIGNAL INTERRUPTED
+                    </h2>
+
+
+                    <p id="error-copy"></p>
+
+
+                    <button
+                        class="again-button"
+                        id="error-retry-btn"
+                        type="button"
+                    >
+                        TRY AGAIN
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </form>
+
+
+    <button
+        class="calc-arrow calc-left"
+        id="calc-left"
+    >
+        ←
+    </button>
+
+
+    <button
+        class="calc-arrow calc-right"
+        id="calc-right"
+    >
+        →
+    </button>
+
+
+    <div class="calc-hint">
+
+        DRAG / SWIPE / ARROW KEYS
+
+    </div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
 
     <div class="footer-brand">
-      MENTAL SIGNAL<span>.</span>
+
+        MENTAL<br>
+        SIGNAL.
+
     </div>
+
+
+    <!-- <div>
+
+        STUDENT WELLNESS<br>
+        MACHINE LEARNING EXPERIMENT
+
+    </div> -->
+
 
     <div>
-      STUDENT WELLNESS
-      <br>
-      MACHINE LEARNING EXPERIMENT
+        © 2026
     </div>
 
-    <div>
-      © 2026
-    </div>
-
-  </footer>
+</footer>
 
 
-  <script src="script.js"></script>
+</main>
+
+
+<script src="script.js"></script>
 
 </body>
+
 </html>
